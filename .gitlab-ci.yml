@@ -1,0 +1,88 @@
+image:
+  name: mynode:latest
+  pull_policy: if-not-present
+
+stages:
+  - install
+  - build
+  - deploy
+  - complete
+  - error
+
+cache:
+  key:
+    files:
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  paths:
+    - node_modules
+
+variables:
+  INSTALL_MSG: '用户侧前端$CI_COMMIT_BRANCH分支$CI_COMMIT_SHORT_SHA提交推送成功，开始安装依赖[1/4]构建日志:$CI_PIPELINE_URL'
+  BUILD_MSG: '📦开始构建打包[2/4]'
+  DEPLOY_MSG: '开始部署镜像[3/4]'
+  COMPLETE_MSG: '🚀用户侧前端$CI_COMMIT_BRANCH分支$CI_COMMIT_SHORT_SHA提交构建成功[4/4]'
+  ERROR_MSG: '❌用户侧前端$CI_COMMIT_BRANCH分支$CI_COMMIT_SHORT_SHA提交构建错误，请查看日志！'
+
+install:
+  stage: install
+  before_script:
+    - echo $INSTALL_MSG
+    - 'curl -XPOST -H ''Content-Type: application/json'' -d ''{"msg_type":"text","content":{"text":"''$INSTALL_MSG''"}}'' $FEISHU_BOT_URL'
+  only:
+    - prod
+    - dev
+  script:
+    - pnpm i
+
+build:
+  stage: build
+  before_script:
+    - echo $BUILD_MSG
+    - 'curl -XPOST -H ''Content-Type: application/json'' -d ''{"msg_type":"text","content":{"text":"''$BUILD_MSG''"}}'' $FEISHU_BOT_URL'
+  only:
+    - dev
+    - prod
+  script:
+    - pnpm build
+    - 'curl -XPOST -H ''Content-Type: application/json'' -d ''{"msg_type":"text","content":{"text":"''$DEPLOY_MSG''"}}'' $FEISHU_BOT_URL'
+
+deploy-dev:
+  stage: deploy
+  image: docker
+  before_script:
+    - echo $DEPLOY_MSG
+  only:
+    - dev
+  script:
+    - docker build --build-arg URL=$NUXT_BASE_URL_DEV --build-arg APP_URL=/dev/juejin/ -t frontend-dev-image .
+    - if [ $(docker ps -aq --filter name=frontend-dev) ]; then docker rm -f frontend-dev;fi
+    - docker run -d -p 6002:3000 --name frontend-dev frontend-dev-image
+
+deploy-prod:
+  stage: deploy
+  image: docker
+  before_script:
+    - echo $DEPLOY_MSG
+  only:
+    - prod
+  script:
+    - docker build --build-arg URL=$NUXT_BASE_URL_PROD --build-arg APP_URL=/juejin/ -t frontend-prod-image .
+    - if [ $(docker ps -aq --filter name=frontend-prod) ]; then docker rm -f frontend-prod;fi
+    - docker run -d -p 6001:3000 --name frontend-prod frontend-prod-image
+
+complete:
+  stage: complete
+  only:
+    - prod
+    - dev
+  script:
+    - echo $COMPLETE_MSG
+    - 'curl -XPOST -H ''Content-Type: application/json'' -d ''{"msg_type":"text","content":{"text":"''$COMPLETE_MSG''"}}'' $FEISHU_BOT_URL'
+
+error:
+  stage: error
+  when: on_failure
+  script:
+    - echo $ERROR_MSG
+    - 'curl -XPOST -H ''Content-Type: application/json'' -d ''{"msg_type":"text","content":{"text":"''$ERROR_MSG''"}}'' $FEISHU_BOT_URL'

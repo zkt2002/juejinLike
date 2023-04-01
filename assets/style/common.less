@@ -1,0 +1,89 @@
+/* 全局默认样式，如需更改请在此批注修改内容 */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	border: 0 solid transparent;
+}
+
+/* prevent iOS font size change */
+html {
+	font-size: 12px; 
+}
+
+/* // reset body line-height */
+body {
+	min-height: 100vh;
+	font-family: -apple-system, system-ui, 'Segoe UI', Roboto, Ubuntu, Cantarell,
+		'Noto Sans', sans-serif, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC',
+		'Hiragino Sans GB', 'Microsoft YaHei', Arial !important;
+	background-color: var(--theme-main-bg);
+	line-height: 1;
+	text-rendering: optimizespeed;
+	-webkit-font-smoothing: unset !important;
+}
+
+/*  all media elements set to block and full width */
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+	display: block;
+	max-width: 100%;
+}
+
+/*  inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+	font: inherit;
+	line-height: inherit;
+	color: inherit;
+}
+
+/*  collapse table */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*  reset anchor style */
+a {
+	text-decoration: inherit;
+	color: inherit;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+
+/*  reset heading style */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: inherit;
+	font-weight: inherit;
+}
+
+/*  reset list style */
+ol,
+ul {
+	list-style: none;
+}
+
+/* reset firefox placeholder opacity */
+/* stylelint-disable-next-line selector-no-vendor-prefix */
+::-moz-placeholder {
+	opacity: 1;
+}

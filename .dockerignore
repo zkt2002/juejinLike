@@ -1,0 +1,16 @@
+.husky
+.nuxt
+.output
+.vscode
+node_modules
+Dockerfile
+.dockerignore
+.git
+.gitignore
+.eslintignore
+.eslintrc.js
+.prettierignore
+.prettierrc.js
+.stylelintignore
+.stylelintrc.js
+README.md

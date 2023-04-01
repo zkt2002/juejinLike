@@ -1,0 +1,69 @@
+@font-face {
+  font-family: icomoon;
+  src:  url('@/assets/fonts/iconfont/icomoon.eot?rd99ov');
+  src:  url('@/assets/fonts/iconfont/icomoon.eot?rd99ov#iefix') format('embedded-opentype'),
+    url('@/assets/fonts/iconfont/icomoon.ttf?rd99ov') format('truetype'),
+    url('@/assets/fonts/iconfont/icomoon.woff?rd99ov') format('woff'),
+    url('@/assets/fonts/iconfont/icomoon.svg?rd99ov#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^='icon-'], [class*=' icon-'] {
+	/* use !important to prevent issues with browser extensions that change fonts */
+	/* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
+	font-family: icomoon !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-delete::before {
+  content: '\e900';
+  color:#a4a4a4;
+}
+
+.icon-search::before {
+  content: '\e901';
+  color: #a4a4a4;
+}
+
+.icon-txt::before {
+  content: '\e902';
+}
+
+.icon-logo::before {
+  content: '\e903';
+}
+
+.icon-tri::before {
+  content: '\e904';
+  color: #a4a4a4;
+}
+
+.icon-view::before {
+  content: '\e905';
+  color: #a4a4a4;
+}
+
+/* 黑色主题vfx  */
+.mask::before {
+	position: fixed;
+	top: 0%;
+	z-index: -1;
+	display: block;
+	width: 100vw;
+	height: 40vh;
+	background: url('@/assets/img/vfx/brighten.png') 100% no-repeat;
+	background-position: 0 0;
+	background-size: 100vw 30vh;
+  transition: opacity 0.2s linear;
+	content: '';
+}
